@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/goit-react-hw-04-phonebook/static/css/main.a5d3a3d6.css",
+    "main.js": "/goit-react-hw-04-phonebook/static/js/main.26090c55.js",
+    "static/media/notepad-spring.jpg": "/goit-react-hw-04-phonebook/static/media/notepad-spring.bdb252f642133a828352.jpg",
+    "index.html": "/goit-react-hw-04-phonebook/index.html",
+    "main.a5d3a3d6.css.map": "/goit-react-hw-04-phonebook/static/css/main.a5d3a3d6.css.map",
+    "main.26090c55.js.map": "/goit-react-hw-04-phonebook/static/js/main.26090c55.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a5d3a3d6.css",
+    "static/js/main.26090c55.js"
+  ]
+}
