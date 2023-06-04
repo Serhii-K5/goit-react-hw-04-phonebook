@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm/ContactForm';
@@ -9,41 +9,39 @@ import css from './styles/styles.module.css';
 
 const KEY_LOCALSTORAGE = 'contactList';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
-
-  componentDidMount() {
+export const App = () => {
+  const [contacts, setContacts] = useState([
+    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  ])
+  
+  const [filter, setFilter] = useState('');
+  const [isRender, setRender] = useState(true);
+  
+  // useEffect(() => { }, []);
+  
+  useEffect(() => {
     const contactsFromLocalStorage = localStorage.getItem(KEY_LOCALSTORAGE);
-    const parsedContacts = JSON.parse(contactsFromLocalStorage);
-
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+    
+    if (contactsFromLocalStorage !== 'undefined') {
+      setRender(false);
+      const parsedContacts = JSON.parse(contactsFromLocalStorage);
+      if (parsedContacts) {
+        setContacts(parsedContacts);
+      }
+    } else {
+      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(contacts));
     }
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    const prevStateContacts = prevState.contacts;
-    const nextStayContacts = this.state.contacts;
+  }, [contacts, isRender]);
 
-    if (prevStateContacts !== nextStayContacts) {
-      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(nextStayContacts));
-    }
-  }
-
-
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     const id = nanoid();
     const name = evt.name;
     const number = evt.number;
-    const contactsLists = [...this.state.contacts];
+    const contactsLists = [...contacts];
 
     if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
       alert(`${name} is already in contacts.`);
@@ -51,54 +49,48 @@ export class App extends Component {
       contactsLists.push({ name, id, number });
     }
 
-    this.setState({ contacts: contactsLists });
+    setContacts(contactsLists);
   };
 
-  handleChange = evt => {
-    const { name, value } = evt.target;
-    this.setState({ [name]: value });
+  const handleChange = evt => {
+    const {value} = evt.target;
+    setFilter(value);
   };
 
-  сontactFiltered = () => {
-    const filterContactsList = this.state.contacts.filter(contact => {
+  const сontactFiltered = () => {
+    const filterContactsList = contacts.filter(contact => {
       return contact.name
         .toLowerCase()
-        .includes(this.state.filter.toLowerCase());
+        .includes(filter.toLowerCase());
     });
 
     return filterContactsList;
   };
 
-  handleDelete = evt => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== evt),
-    }));
+  const handleDelete = evt => {
+    setContacts(contacts.filter(contact => contact.id !== evt));
   };
 
-  render() {
-    const { filter } = this.state;
-
-    return (      
-      <div className={css.container}>
-        <h1 hidden>HW #2</h1>        
-        <div className={css.containerPhonebookStyles}>
-          <PhonebookImg />
-          <section> 
-            <h2>Phonebook</h2>
-            <ContactForm handleSubmit={this.handleSubmit} />          
-          </section>
-          <section>
-            <h2> Contacts</h2>
-            <Filter filter={filter} handleChange={this.handleChange} />
-            <ContactList
-              contacts={this.сontactFiltered()}
-              handleDelete={this.handleDelete}
-            /> 
-          </section>                       
-        </div>
+  return (      
+    <div className={css.container}>
+      <h1 hidden>HW #4 (phonebook)</h1>        
+      <div className={css.containerPhonebookStyles}>
+        <PhonebookImg />
+        <section> 
+          <h2>Phonebook</h2>
+          <ContactForm handleSubmit={handleSubmit} />          
+        </section>
+        <section>
+          <h2> Contacts</h2>
+          <Filter filter={filter} handleChange={handleChange} />
+          <ContactList
+            contacts={сontactFiltered()}
+            handleDelete={handleDelete}
+          /> 
+        </section>                       
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 App.propTypes = {
