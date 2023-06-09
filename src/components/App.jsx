@@ -6,24 +6,30 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { PhonebookImg } from './PhonebookImg/PhonebookImg';
 import css from './styles/styles.module.css';
-
-const KEY_LOCALSTORAGE = 'contactList';
+import data from './data/data.json'
 
 export const App = () => {
-  const [contacts, setContacts] = useState([
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  ])
+  const [contacts, setContacts] = useState([]);
+  //   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  //   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  //   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  //   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  // ])
   
   const [filter, setFilter] = useState('');
   const [isRender, setRender] = useState(true);
+
+  const [keyLocalStorege, setKeyLocalStorege] = useState('contactList');
+  // const KEY_LOCALSTORAGE = 'contactList';
   
   // useEffect(() => { }, []);
+
+  useEffect(() => {
+    return () => localStorage.removeItem(setKeyLocalStorege({keyLocalStorege}));
+  },[])
   
   useEffect(() => {
-    const contactsFromLocalStorage = localStorage.getItem(KEY_LOCALSTORAGE);
+    const contactsFromLocalStorage = localStorage.getItem(setKeyLocalStorege({keyLocalStorege}));
     
     if (contactsFromLocalStorage !== 'undefined') {
       setRender(false);
@@ -32,9 +38,11 @@ export const App = () => {
         setContacts(parsedContacts);
       }
     } else {
-      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(contacts));
+      localStorage.setItem(data);
+      setContacts(data.JSON.stringify(data));      
+      // localStorage.setItem(setKeyLocalStorege({keyLocalStorege}), JSON.stringify(contacts));
     }
-
+    
   }, [contacts, isRender]);
 
   const handleSubmit = evt => {

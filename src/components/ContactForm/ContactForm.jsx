@@ -1,10 +1,11 @@
 import propTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import css from './ContactForm.module.css';
 
 export const ContactForm = ({handleSubmit}) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [keyLocalStorege, setKeyLocalStorege] = useState('contactList')
 
   const handleChangeName = evt => {
     const {value} = evt.target;
@@ -25,32 +26,40 @@ export const ContactForm = ({handleSubmit}) => {
     // form.reset();
   };
 
+  // useEffect(() => { },[])
+  
+  
+
   return (
     <form className={css.form} onSubmit={handleFormSubmit}>
-      <label className={css.formLabel}>Name </label>
-      <input
-        className={css.formName}
-        type="text"
-        name="name"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        required          
-        onChange={handleChangeName}          
-        value={name}
-        placeholder="Enter name"
-      />
-      <label className={css.formLabel}>Number </label>
-      <input
-        className={css.formNumber}
-        type="tel"
-        name="number"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        required
-        onChange={handleChangeNumber}
-        value={number}
-        placeholder="Enter phone number"
-      />
+      {/* <label className={css.formLabel}>Name </label> */}
+      <label className={css.formLabel}>Name 
+        <input
+          className={css.formName}
+          type="text"
+          name="name"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required          
+          onChange={handleChangeName}          
+          value={name}
+          placeholder="Enter name"
+        />
+      </label>
+      {/* <label className={css.formLabel} for={css.formNumber}>Number </label> */}
+      <label className={css.formLabel}>Number
+        <input
+          className={css.formNumber}
+          type="tel"
+          name="number"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+          onChange={handleChangeNumber}
+          value={number}
+          placeholder="Enter phone number"
+        />
+      </label>
       <button className={css.formBtn} type="submit">
         Add contact
       </button>
