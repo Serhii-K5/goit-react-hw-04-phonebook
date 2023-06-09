@@ -10,6 +10,7 @@ import data from './data/data.json'
 
 export const App = () => {
   const [contacts, setContacts] = useState([]);
+  // const [contacts, setContacts] = useState([
   //   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
   //   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
   //   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
@@ -19,28 +20,44 @@ export const App = () => {
   const [filter, setFilter] = useState('');
   const [isRender, setRender] = useState(true);
 
-  const [keyLocalStorege, setKeyLocalStorege] = useState('contactList');
-  // const KEY_LOCALSTORAGE = 'contactList';
+  const KEY_LOCALSTORAGE = 'contactList';
   
   // useEffect(() => { }, []);
 
+  
   useEffect(() => {
-    return () => localStorage.removeItem(setKeyLocalStorege({keyLocalStorege}));
+    const contactsFromLocalStorage = localStorage.getItem(KEY_LOCALSTORAGE);
+
+    if (contactsFromLocalStorage === 'undefined' || contactsFromLocalStorage === null) {
+      // const dd = data;
+      // setContacts(dd); 
+      setContacts(data);
+      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(data)); 
+    }
+    return () => localStorage.removeItem(KEY_LOCALSTORAGE); //для запобігання засмічення localStorage
   },[])
   
   useEffect(() => {
-    const contactsFromLocalStorage = localStorage.getItem(setKeyLocalStorege({keyLocalStorege}));
+    const contactsFromLocalStorage = localStorage.getItem(KEY_LOCALSTORAGE);
     
-    if (contactsFromLocalStorage !== 'undefined') {
+    // if (contactsFromLocalStorage !== 'undefined' && contactsFromLocalStorage !== null) {
+    //   setRender(false);
+    //   const parsedContacts = JSON.parse(contactsFromLocalStorage);
+    //   if (parsedContacts) {
+    //     setContacts(parsedContacts);
+    //   }
+    // } else {
+    //   localStorage.setItem(data);
+    //   setContacts(JSON.stringify(data));      
+    //   // localStorage.setItem(setKeyLocalStorege({keyLocalStorege}), JSON.stringify(contacts));
+    // }
+
+    if (contactsFromLocalStorage !== 'undefined' && contactsFromLocalStorage !== null) {
       setRender(false);
-      const parsedContacts = JSON.parse(contactsFromLocalStorage);
-      if (parsedContacts) {
-        setContacts(parsedContacts);
-      }
-    } else {
-      localStorage.setItem(data);
-      setContacts(data.JSON.stringify(data));      
-      // localStorage.setItem(setKeyLocalStorege({keyLocalStorege}), JSON.stringify(contacts));
+      // const parsedContacts = JSON.parse(contactsFromLocalStorage);
+      // if (parsedContacts) {
+      //   setContacts(parsedContacts);
+      // }
     }
     
   }, [contacts, isRender]);
@@ -52,12 +69,13 @@ export const App = () => {
     const contactsLists = [...contacts];
 
     if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
-      alert(`${name} is already in contacts.`);
+      return alert(`${name} is already in contacts.`);
     } else {
-      contactsLists.push({ name, id, number });
+      contactsLists.push({ name, id, number });      
     }
 
     setContacts(contactsLists);
+    localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(contactsLists));
   };
 
   const handleChange = evt => {
