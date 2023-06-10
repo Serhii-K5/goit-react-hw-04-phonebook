@@ -6,7 +6,7 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { PhonebookImg } from './PhonebookImg/PhonebookImg';
 import css from './styles/styles.module.css';
-import data from './data/data.json'
+import defaultData from './data/data.json'
 
 export const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -22,17 +22,12 @@ export const App = () => {
 
   const KEY_LOCALSTORAGE = 'contactList';
   
-  // useEffect(() => { }, []);
-
-  
   useEffect(() => {
     const contactsFromLocalStorage = localStorage.getItem(KEY_LOCALSTORAGE);
 
     if (contactsFromLocalStorage === 'undefined' || contactsFromLocalStorage === null) {
-      // const dd = data;
-      // setContacts(dd); 
-      setContacts(data);
-      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(data)); 
+      setContacts(defaultData);
+      localStorage.setItem(KEY_LOCALSTORAGE, JSON.stringify(defaultData)); 
     }
     return () => localStorage.removeItem(KEY_LOCALSTORAGE); //для запобігання засмічення localStorage
   },[])
@@ -40,24 +35,8 @@ export const App = () => {
   useEffect(() => {
     const contactsFromLocalStorage = localStorage.getItem(KEY_LOCALSTORAGE);
     
-    // if (contactsFromLocalStorage !== 'undefined' && contactsFromLocalStorage !== null) {
-    //   setRender(false);
-    //   const parsedContacts = JSON.parse(contactsFromLocalStorage);
-    //   if (parsedContacts) {
-    //     setContacts(parsedContacts);
-    //   }
-    // } else {
-    //   localStorage.setItem(data);
-    //   setContacts(JSON.stringify(data));      
-    //   // localStorage.setItem(setKeyLocalStorege({keyLocalStorege}), JSON.stringify(contacts));
-    // }
-
     if (contactsFromLocalStorage !== 'undefined' && contactsFromLocalStorage !== null) {
       setRender(false);
-      // const parsedContacts = JSON.parse(contactsFromLocalStorage);
-      // if (parsedContacts) {
-      //   setContacts(parsedContacts);
-      // }
     }
     
   }, [contacts, isRender]);
