@@ -30,7 +30,7 @@ export const App = () => {
     const number = evt.number;
     const contactsLists = [...contacts];
 
-    if (contactsLists.findIndex(contact => name === contact.name && number === contact.number) !== -1) {
+    if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
       return alert(`${name} is already in contacts.`);
     } else {
       contactsLists.push({id, name, number});      
